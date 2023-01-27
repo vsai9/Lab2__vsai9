@@ -1,0 +1,154 @@
+# Cadence Genus(TM) Synthesis Solution, Version 19.12-s121_1, built Dec  3 2019 15:07:17
+
+# Date: Thu Jan 26 15:31:09 2023
+# Host: mo.ece.pdx.edu (x86_64 w/Linux 3.10.0-1160.81.1.el7.x86_64) (1core*32cpus*32physical cpus*Intel Xeon E312xx (Sandy Bridge, IBRS update) 16384KB)
+# OS:   CentOS Linux release 7.9.2009 (Core)
+
+# Cadence Genus(TM) Synthesis Solution, Version 19.12-s121_1, built Dec  3 2019 15:07:17
+
+# Date: Thu Jan 26 15:31:18 2023
+# Host: mo.ece.pdx.edu (x86_64 w/Linux 3.10.0-1160.81.1.el7.x86_64) (1core*32cpus*32physical cpus*Intel Xeon E312xx (Sandy Bridge, IBRS update) 16384KB)
+# OS:   CentOS Linux release 7.9.2009 (Core)
+
+set top_design fifo1_sramb
+source ../scripts/genus.tcl
+report_timing
+report_timing -max_paths
+report_timing
+help *drive*
+man set_drive
+set_driving_cell -lib_cell INVX2_RVT [get_ports winc]
+set_drive 0.002 [get_ports rinc]
+set_drive 0.002 [get_ports wdata_in[0]]
+set_drive 0.002 [get_ports wdata_in[1]]
+set_drive 0.002 [get_ports wdata_in[2]]
+set_drive 0.002 [get_ports wdata_in[3]]
+set_drive 0.002 [get_ports wdata_in[4]]
+set_drive 0.002 [get_ports wdata_in[5]]
+set_drive 0.002 [get_ports wdata_in[6]]
+set_drive 0.002 [get_ports wdata_in[7]]
+set_drive 0.002 [get_ports winc]
+set_driving_cell -lib_cell INVX2_RVT [get_ports winc]
+check_timing_intent -verbose
+set_driving_cell -lib_cell INVX2_RVT [get_ports rinc]
+set_driving_cell -lib_cell INVX2_RVT [get_ports wdata_in[0]]
+set_driving_cell -lib_cell INVX2_RVT [get_ports wdata_in[1]]
+set_driving_cell -lib_cell INVX2_RVT [get_ports wdata_in[2]]
+set_driving_cell -lib_cell INVX2_RVT [get_ports wdata_in[3]]
+set_driving_cell -lib_cell INVX2_RVT [get_ports wdata_in[4]]
+set_driving_cell -lib_cell INVX2_RVT [get_ports wdata_in[5]]
+set_driving_cell -lib_cell INVX2_RVT [get_ports wdata_in[6]]
+set_driving_cell -lib_cell INVX2_RVT [get_ports wdata_in[7]]
+set_driving_cell -lib_cell INVX2_RVT [get_ports winc]
+check_timing_intent -verbose
+get_ports rrst_n
+dbGte [get_ports rrst_n]
+report_property  [get_ports rrst_n]
+report_property -property_list direction  [get_ports rrst_n]
+report_property -property_list direction  [get_ports wrst_n]
+report_timing -from wrst_n
+report_timing -from wrst_n -unconstrained
+get_cell wdata_reg_2_/RSTB
+get_pin wdata_reg_2_/RSTB
+get_clock [get_pin wdata_reg_2_/RSTB]
+get_clock [get_pin wdata_reg_2_/RSTB]
+get_clocks
+report_timing -from wrst_n
+report_timing -from wrst_n -unconstrained
+report_timing -from wrst_n -unconstrained  -output_format
+report_timing -from wrst_n -unconstrained  -domain
+report_timing
+report_timing -from wrst_n -unconstrained
+report_timing -from wrst_n -unconstrained  -capture_clock_pins
+report_timing -from wrst_n -unconstrained
+report_timing -from wrst_n -unconstrained  -paths
+get_attribute paths fifo1_sramb/rclk
+get_path_groups
+report_timing -group wclk
+help *path_group*
+man reset_path_group
+reset_path_group -all
+group_path -name INTERNAL -from [all_clocks] -to [all_clocks ]
+group_path -name INPUTS -from [ get_ports -filter "direction==in&&full_name!~*clk*" ]
+group_path -name OUTPUTS -to [ get_ports -filter "direction==out" ]
+check_timing_intent -verbose
+get_nets fifo1_sramb/fifomem/n_69
+get_nets fifomem/n_69
+get_pins -of_objects [get_nets fifomem/n_69]
+get_pins -of_objects [get_nets fifomem/n_69] -filter {direction = out}
+get_pins -of_objects [get_nets fifomem/n_69] -filter {direction == out}
+get_pins -of_objects [get_nets fifomem/n_69] -filter {direction == in}
+get_pins fifomem/g198/A \
+
+report_property -property_list direction [get_pins fifomem/g198/A ]
+check_timing_intent -verbose
+set_driving_cell -lib_cell INVX2_RVT [get_ports rrst_n]
+set_driving_cell -lib_cell INVX2_RVT [get_ports wrst_n]
+check_timing_intent -verbose
+help *exception*
+help *ignore*
+help *ignore*
+man set_ideal_network
+set_ideal_network [get_ports rrst_n]
+set_ideal_network [get_ports wrst_n]
+check_timing_intent -verbose
+set_ideal_network [get_ports rrst_n]
+set_ideal_network [get_ports wrst_n]
+get_nets fifomem/n_69
+get_pins -of_objects [get_nets fifomem/n_69] -filter {direction == out }
+get_pins -of_objects [get_nets fifomem/n_69] -filter {direction == in  }
+report_qor
+report_timing
+set_driving_cell -lib_cell INVX2_RVT [get_ports wdata_in[2]]
+set_driving_cell -lib_cell INVX8_RVT [get_ports wdata_in[2]]
+report_timing
+report_timing -from wdata_in[2]
+set_driving_cell -lib_cell INVX16_RVT [get_ports wdata_in[2]]
+set_driving_cell -lib_cell BUFX16_RVT [get_ports wdata_in[2]]
+get_lib_cells *BUF*
+get_lib_cells *INV*
+get_lib_cells BUF*
+get_lib_cells *BUFX16*
+get_lib_cells *BUFX8*
+get_lib_cells *BUF*8*
+get_lib_cells *BUF*
+get_lib_cells *BUF*16*
+get_lib_cells *BUF*32*
+get_lib_cells *BUF*64*
+get_lib_cells *BUF*32*
+report_property -property_list foot_print  [get_lib_cells *BUF*32*]
+report_property   [get_lib_cells *BUF*32*]
+report_property -property_list foot  [get_lib_cells *BUF*32*]
+report_property -property_list footprint  [get_lib_cells *BUF*32*]
+report_property -property_list all  [get_lib_cells *BUF*32*]
+report_property  [get_lib_cells *BUF*32*]
+report_property -property_list lib_cell  [get_lib_cells *BUF*32*]
+list_property -type lib_cell
+report_property -property_list base_cell  [get_lib_cells *BUF*32*]
+set_driving_cell -lib_cell IBUFFX32_RVT [get_ports wdata_in[2]]
+report_timing
+report_timing -from wdata_in[2]
+set_driving_cell -lib_cell IBUFFX16_RVT [get_ports wdata_in[2]]
+report_timing -from wdata_in[2]
+set_driving_cell -lib_cell TBUFFX16_RVT [get_ports wdata_in[2]]
+set_driving_cell -lib_cell TNBUFFX16_RVT [get_ports wdata_in[2]]
+report_timing -from wdata_in[2]
+set_driving_cell -lib_cell NBUFFX16_RVT [get_ports wdata_in[2]]
+report_timing -from wdata_in[2]
+set_driving_cell -lib_cell IBUFFX16_RVT [get_ports wdata_in[2]]
+report_timing -from wdata_in[2]
+set_driving_cell -lib_cell IBUFFX32_RVT [get_ports wdata_in[2]]
+report_timing -from wdata_in[2]
+set_driving_cell -lib_cell IBUFFX32_RVT [get_ports rinc]
+set_driving_cell -lib_cell IBUFFX32_RVT [get_ports wdata_in[0]]
+set_driving_cell -lib_cell IBUFFX32_RVT [get_ports wdata_in[1]]
+set_driving_cell -lib_cell IBUFFX32_RVT [get_ports wdata_in[2]]
+set_driving_cell -lib_cell IBUFFX32_RVT [get_ports wdata_in[3]]
+set_driving_cell -lib_cell IBUFFX32_RVT [get_ports wdata_in[4]]
+set_driving_cell -lib_cell IBUFFX32_RVT [get_ports wdata_in[5]]
+set_driving_cell -lib_cell IBUFFX32_RVT [get_ports wdata_in[6]]
+set_driving_cell -lib_cell IBUFFX32_RVT [get_ports wdata_in[7]]
+set_driving_cell -lib_cell IBUFFX32_RVT [get_ports winc]
+report_qor
+report_timing -from wdata_in[2]
+report_qor

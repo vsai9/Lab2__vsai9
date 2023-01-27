@@ -15,8 +15,13 @@ if { [info exists synopsys_program_name ] && ($synopsys_program_name == "icc2_sh
     #set_scenario_status  default -active false
     set_scenario_status func_slow -active true -hold true -setup true
 }
-set wclk_period 2.0
-set rclk_period 2.0
+
+
+set wclk_period 2
+set rclk_period 2
+
+#set wclk_period 1.12
+#set rclk_period 1.12
 set wclk2x_period [ expr $wclk_period / 2 ]
 
 create_clock -name "wclk" -period $wclk_period  wclk
@@ -26,6 +31,43 @@ create_clock -name "rclk" -period $rclk_period rclk
 #Add the new clock.  Make it 1/2 the wclk period since it is called wclk2x
 create_clock -name "wclk2x" -period $wclk2x_period wclk2x
 
+
+##########################################################################################################
+set_clock_latency 0.1 [all_clocks]
+##########################################################################################################
+
+
+############################ Transition and Uncertainity Settings #########################################
+
+set wclk2x_transition [expr $wclk2x_period * 0.1666 ]
+set rclk_transition [expr $rclk_period * 0.1666 ]
+set wclk_transition [expr $wclk_period * 0.1666 ]
+
+set wclk2x_uncertainity [expr $wclk2x_period * 0.1 ]
+set rclk_uncertainity [expr $rclk_period * 0.1 ]
+set wclk_uncertainity [expr $wclk_period * 0.1]
+
+set_clock_transition $wclk2x_transition [get_clocks wclk2x]
+set_clock_transition $rclk_transition [get_clocks rclk]
+set_clock_transition $wclk_transition [get_clocks wclk]
+
+
+set_clock_uncertainty -setup $wclk2x_uncertainity [get_clocks wclk2x]
+set_clock_uncertainty -setup $rclk_uncertainity [get_clocks rclk]
+set_clock_uncertainty -setup $wclk_uncertainity [get_clocks wclk]
+
+set_clock_uncertainty -hold $wclk2x_uncertainity [get_clocks wclk2x]
+set_clock_uncertainty -hold $rclk_uncertainity [get_clocks rclk]
+set_clock_uncertainty -hold $wclk_uncertainity [get_clocks wclk]
+ 
+
+###########################################################################################################
+
+
+
+
+
+
 set_false_path -from [get_clocks wclk ] -to [get_clocks rclk]
 set_false_path -from [get_clocks rclk ] -to [ get_clocks wclk]
 
@@ -34,12 +76,12 @@ set_false_path -from [get_clocks rclk ] -to [ get_clocks wclk]
 # External delay should be some percentage of clock period.
 # Tune/relax if violating; most concerned about internal paths.
 
-# I like set_driving_cell to a std cell from the library.  set_drive works to.
-
-# set_load
+################# Defining input delay values #########################
 set wclk2x_DELAY [expr $wclk2x_period / 2 ]
 set rclk_DELAY [expr $rclk_period / 2 ]
 set wclk_DELAY [expr $wclk_period / 2 ]
+#################################################################
+
 ################# input delays definitions #########################
 set_input_delay $rclk_DELAY -clock [get_clocks rclk] [get_ports rinc]
 set_input_delay $wclk2x_DELAY -clock [get_clocks wclk2x] [get_ports wdata_in[0]]
@@ -64,10 +106,49 @@ set_output_delay $rclk_DELAY -clock [get_clocks rclk] [get_ports rdata[6]]
 set_output_delay $rclk_DELAY -clock [get_clocks rclk] [get_ports rdata[7]]
 set_output_delay $rclk_DELAY -clock [get_clocks rclk] [get_ports rempty]
 set_output_delay $wclk_DELAY -clock [get_clocks wclk] [get_ports wfull]
+##########################################################################
 
+# I like set_driving_cell to a std cell from the library.  set_drive works to.
+################## Driving Cell Definitions ##################################
+#set_driving_cell -lib_cell INVX2_RVT [get_ports rinc]
+#set_driving_cell -lib_cell INVX2_RVT [get_ports wdata_in[0]]
+#set_driving_cell -lib_cell INVX2_RVT [get_ports wdata_in[1]]
+#set_driving_cell -lib_cell INVX2_RVT [get_ports wdata_in[2]]
+#set_driving_cell -lib_cell INVX2_RVT [get_ports wdata_in[3]]
+#set_driving_cell -lib_cell INVX2_RVT [get_ports wdata_in[4]]
+#set_driving_cell -lib_cell INVX2_RVT [get_ports wdata_in[5]]
+#set_driving_cell -lib_cell INVX2_RVT [get_ports wdata_in[6]]
+#set_driving_cell -lib_cell INVX2_RVT [get_ports wdata_in[7]]
+#set_driving_cell -lib_cell INVX2_RVT [get_ports winc]
+
+set_drive 0.002 [get_ports rinc]
+set_drive 0.002 [get_ports wdata_in[0]]
+set_drive 0.002 [get_ports wdata_in[1]]
+set_drive 0.002 [get_ports wdata_in[2]]
+set_drive 0.002 [get_ports wdata_in[3]]
+set_drive 0.002 [get_ports wdata_in[4]]
+set_drive 0.002 [get_ports wdata_in[5]]
+set_drive 0.002 [get_ports wdata_in[6]]
+set_drive 0.002 [get_ports wdata_in[7]]
+set_drive 0.002 [get_ports winc]
+
+##########################################################################
+
+# set_load
+#################### Load Definitions #################################
+set_load 0.001 [get_ports rdata[0]]
+set_load 0.001 [get_ports rdata[1]]
+set_load 0.001 [get_ports rdata[2]]
+set_load 0.001 [get_ports rdata[3]]
+set_load 0.001 [get_ports rdata[4]]
+set_load 0.001 [get_ports rdata[5]]
+set_load 0.001 [get_ports rdata[6]]
+set_load 0.001 [get_ports rdata[7]]
+set_load 0.001 [get_ports rempty]
+set_load 0.001 [get_ports wfull]
+##########################################################################
 
 #group_path -name INTERNAL -from [all_clocks] -to [all_clocks ]
 group_path -name INPUTS -from [ get_ports -filter "direction==in&&full_name!~*clk*" ]
 group_path -name OUTPUTS -to [ get_ports -filter "direction==out" ]
-
 
